@@ -44,25 +44,25 @@ data = {
     ]
 }
 
-# Load into DataFrame
+
 df = pd.DataFrame(data)
 df.dropna(inplace=True)
 
-# UI: Title
+
 st.title("✈️ Airline Sentiment Analyzer")
 st.markdown("This app predicts the sentiment of airline feedback.")
 
-# Visualize dataset
+
 with st.expander("Show Dataset"):
     st.dataframe(df)
 
-# Count plot
+
 st.subheader("Sentiment Distribution")
 fig, ax = plt.subplots()
 sns.countplot(x='airline_sentiment', data=df, ax=ax)
 st.pyplot(fig)
 
-# WordClouds
+
 st.subheader("Sentiment Word Clouds")
 for sentiment in ['positive', 'negative', 'neutral']:
     text = " ".join(df[df['airline_sentiment'] == sentiment]['text'])
@@ -73,7 +73,7 @@ for sentiment in ['positive', 'negative', 'neutral']:
     ax.axis('off')
     st.pyplot(fig)
 
-# Preprocessing and training
+
 X = df['text']
 y = df['airline_sentiment']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -85,14 +85,14 @@ X_test_vect = vectorizer.transform(X_test)
 model = LogisticRegression()
 model.fit(X_train_vect, y_train)
 
-# Evaluation
+
 st.subheader("Model Evaluation")
 y_pred = model.predict(X_test_vect)
 st.write("**Accuracy:**", accuracy_score(y_test, y_pred))
 st.text("Classification Report:")
 st.text(classification_report(y_test, y_pred))
 
-# === PREDICTION SECTION ===
+
 st.subheader("🔍 Predict Sentiment from Feedback")
 user_input = st.text_area("✍️ Enter your airline feedback here:")
 
